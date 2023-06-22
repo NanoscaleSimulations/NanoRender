@@ -1,10 +1,5 @@
 from dataclasses import dataclass
-from typing import List
-
-@dataclass
-class Atom:
-    symbol: str
-    position: List[float]
+from Chemistry import Atom
 
 def parse_xyz_format(molecule_data):
     lines = molecule_data.strip().split('\n')
