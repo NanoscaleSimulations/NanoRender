@@ -1,11 +1,12 @@
 def generate_atom_code(atom):
-    return f"createAtom('{atom['name']}', {atom['position']});"
+    return f"createAtom('{atom.symbol}', {atom.position});"
 
 
-def generate_js_code(scene_data):
-    atom_code = [generate_atom_code(atom) for atom in scene_data]
+def generate_js_code(atoms):
+    atom_code = [generate_atom_code(atom) for atom in atoms]
+    #print(atom_code)
     atom_code_str = "\n".join(atom_code)
-
+    print(atom_code_str)
     js_code = f'''
     <script src="https://cdn.jsdelivr.net/npm/three@0.131.0/build/three.min.js"></script>
 
@@ -68,8 +69,8 @@ def generate_html_page(js_code):
     return html_page
 
 
-def generate_3d_model_file(scene_data, filename):
-    js_code = generate_js_code(scene_data)
+def generate_3d_model_file(atoms, filename):
+    js_code = generate_js_code(atoms)
     html_page = generate_html_page(js_code)
 
     with open(filename, 'w') as file:
