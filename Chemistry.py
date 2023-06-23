@@ -10,3 +10,7 @@ class Atom:
 class Bond:
     atom1_position: List[float]
     atom2_position: List[float]
+
+@dataclass
+class Atoms:
+    atoms: List[Atom]
