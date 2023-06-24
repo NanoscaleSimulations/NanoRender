@@ -1,10 +1,9 @@
 def generate_atom_code(atom):
-    return f"createAtom('{atom.symbol}', {atom.position});"
+    return f"createAtom('{atom.GetType()}', {[atom.GetX(), atom.GetY(), atom.GetZ()]});"
 
 
 def generate_js_code(atoms):
     atom_code = [generate_atom_code(atom) for atom in atoms]
-    #print(atom_code)
     atom_code_str = "\n".join(atom_code)
     print(atom_code_str)
     js_code = f'''

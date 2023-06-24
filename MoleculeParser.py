@@ -1,12 +1,10 @@
 from dataclasses import dataclass
+from Chemistry import Atom
+from openbabel import openbabel
 from typing import List
 
-@dataclass
-class Atom:
-    symbol: str
-    position: List[float]
-
 def parse_xyz_format(molecule_data):
+    print('This function should be removed soon at it is not intended for use anymore')
     lines = molecule_data.strip().split('\n')
     num_atoms = int(lines[0].strip())
     atoms = []
@@ -23,11 +21,28 @@ def parse_xyz_format(molecule_data):
 
     return atoms
 
+def File_2_obmol(filename: str) -> openbabel.OBMol:
+    mol = openbabel.OBMol()
+    conv = openbabel.OBConversion()
+    file_extension = filename.split('.')[-1]
+    file_data = open(filename, 'r')
+    if conv.SetInFormat(file_extension) == False:
+        print('File format is not supported')
+    conv.ReadString(mol, file_data.read())
+    file_data.close()
+    return mol
+
+def Get_atoms(mol: openbabel.OBMol) -> List[openbabel.OBAtom]:
+    return [atom for atom in openbabel.OBMolAtomIter(mol)]
+
+def Get_bonds(mol: openbabel.OBMol) -> List[openbabel.OBBond]:
+    return [bond for bond in openbabel.OBMolBondIter(mol)]
+
 if __name__ == '__main__':
-    di_atomic = """
-        2
-        Atoms. File written by MM. MMMMM
-        C   -0.0000    0.0000    0.0000
-        H   -0.0000    0.0000    1.0890
-    """
-    print(parse_xyz_format(di_atomic))
+    filename = 'H2O.xyz'
+    mol = File_2_obmol(filename)
+    print(mol.NumAtoms() == 3)
+    atoms = Get_atoms(mol)
+    print(len(atoms) == 3)
+    bonds = Get_bonds(mol)
+    print(len(bonds) == 2)
